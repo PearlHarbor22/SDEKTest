@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: SDEK_Time_Tracker
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/task_tracker
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: always
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  port: 8080
