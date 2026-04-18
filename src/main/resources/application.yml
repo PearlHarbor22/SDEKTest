@@ -12,9 +12,22 @@ spring:
     init:
       mode: always
 
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
 server:
   port: 8080
+
+app:
+  security:
+    jwt:
+      secret: c2Rla190aW1lX3RyYWNrZXJfc2VjcmV0X2tleV9mb3Jfand0X3NpZ25pbmdfMTIzNDU2Nzg5MA==
+      expiration: 3600000
+    user:
+      username: admin
+      password: admin
