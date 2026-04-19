@@ -18,7 +18,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Testcontainers
@@ -132,6 +134,32 @@ class TimeRecordMapperIntegrationTest {
 
         assertTrue(records.isEmpty());
     }
+
+    @Test
+    void findByEmployeeIdAndPeriod_shouldReturnRecordWhenPeriodPartiallyIntersects() {
+        Task task = createTask("Task with partial overlap");
+
+        TimeRecord record = TimeRecord.builder()
+                .employeeId(1L)
+                .taskId(task.getId())
+                .startTime(LocalDateTime.of(2026, 4, 18, 10, 0, 0))
+                .endTime(LocalDateTime.of(2026, 4, 18, 12, 0, 0))
+                .description("Worked on task with overlap")
+                .build();
+
+        timeRecordMapper.insert(record);
+
+        List<TimeRecord> records = timeRecordMapper.findByEmployeeIdAndPeriod(
+                1L,
+                LocalDateTime.of(2026, 4, 18, 11, 0, 0),
+                LocalDateTime.of(2026, 4, 18, 13, 0, 0)
+        );
+
+        assertEquals(1, records.size());
+        assertEquals(record.getId(), records.get(0).getId());
+        assertEquals("Worked on task with overlap", records.get(0).getDescription());
+    }
+
 
     @Test
     void findByEmployeeIdAndPeriod_shouldReturnEmptyListWhenRecordIsOutOfRange() {

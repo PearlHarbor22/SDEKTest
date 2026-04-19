@@ -24,10 +24,10 @@ public interface TimeRecordMapper {
             SELECT id, employee_id, task_id, start_time, end_time, description
             FROM time_records
             WHERE employee_id = #{employeeId}
-              AND start_time >= #{from}
-              AND end_time <= #{to}
+            AND start_time < #{to}
+            AND end_time > #{from}
             ORDER BY start_time
-            """)
+        """)
     List<TimeRecord> findByEmployeeIdAndPeriod(@Param("employeeId") Long employeeId,
                                                @Param("from") LocalDateTime from,
                                                @Param("to") LocalDateTime to);
