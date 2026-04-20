@@ -16,7 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/**
+ * REST-контроллер для аутентификации.
+ * <p>
+ * Предоставляет endpoint для проверки учетных данных
+ * и выдачи JWT токена.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -33,6 +38,13 @@ public class AuthController {
         this.jwtService = jwtService;
     }
 
+    /**
+     * Выполняет аутентификацию пользователя и возвращает JWT токен.
+     *
+     * @param request данные для входа
+     * @return JWT токен
+     * @throws BusinessException если переданы неверные учетные данные
+     */
     @Operation(summary = "Authenticate user and get JWT token")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Authentication successful",

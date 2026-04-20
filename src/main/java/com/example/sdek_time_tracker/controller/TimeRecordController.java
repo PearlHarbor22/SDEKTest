@@ -23,10 +23,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * REST-контроллер для работы с записями затраченного времени.
+ * <p>
+ * Предоставляет endpoints для создания записи времени
+ * и получения записей сотрудника за указанный период.
+ */
 @RestController
 @RequestMapping("/api/time-records")
 @Validated
@@ -38,6 +43,12 @@ public class TimeRecordController {
         this.timeRecordService = timeRecordService;
     }
 
+    /**
+     * Создает новую запись о затраченном времени сотрудника по задаче.
+     *
+     * @param request данные о затраченном времени
+     * @return созданная запись времени
+     */
     @Operation(summary = "Create time record",
                 description = "Creates a time record for an employee and a task")
     @ApiResponses(value = {
@@ -58,6 +69,14 @@ public class TimeRecordController {
         return timeRecordService.createTimeRecord(request);
     }
 
+    /**
+     * Возвращает записи сотрудника за указанный период времени.
+     *
+     * @param employeeId идентификатор сотрудника
+     * @param from начало периода
+     * @param to конец периода
+     * @return список записей времени
+     */
     @Operation(summary = "Get employee time records by period",
                 description = "Returns all time records for the specified employee within the given period")
     @ApiResponses(value = {

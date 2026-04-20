@@ -8,6 +8,12 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Конфигурация Swagger для документации REST API.
+ * <p>
+ * Определяет основную информацию о сервисе и настраивает схему
+ * Bearer JWT аутентификации для Swagger UI.
+ */
 @Configuration
 public class OpenApiConfig {
 
@@ -19,6 +25,7 @@ public class OpenApiConfig {
                         .version("1.0")
                         .description("REST API for tracking employee time spent on tasks")
                 )
+                // Добавляем описание JWT авторизации в Swagger
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth",

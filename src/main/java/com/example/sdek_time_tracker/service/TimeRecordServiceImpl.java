@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Реализация сервиса для работы с записями затраченного времени.
+ */
 @Service
 public class TimeRecordServiceImpl implements TimeRecordService {
 
@@ -23,6 +26,14 @@ public class TimeRecordServiceImpl implements TimeRecordService {
         this.taskMapper = taskMapper;
     }
 
+    /**
+     * Создает запись времени по задаче.
+     *
+     * @param request данные о затраченном времени
+     * @return созданная запись времени
+     * @throws NotFoundException если задача не существует
+     * @throws BusinessException если интервал времени некорректен
+     */
     @Override
     public TimeRecordResponse createTimeRecord(CreateTimeRecordRequest request) {
         if (!taskMapper.existsById(request.taskId())) {
@@ -45,6 +56,15 @@ public class TimeRecordServiceImpl implements TimeRecordService {
         return toResponse(timeRecord);
     }
 
+    /**
+     * Возвращает записи сотрудника за указанный период.
+     *
+     * @param employeeId идентификатор сотрудника
+     * @param from начало периода
+     * @param to конец периода
+     * @return список записей времени
+     * @throws BusinessException если период задан некорректно
+     */
     @Override
     public List<TimeRecordResponse> getEmployeeTimeRecords(Long employeeId, LocalDateTime from, LocalDateTime to) {
         if (from.isAfter(to)) {

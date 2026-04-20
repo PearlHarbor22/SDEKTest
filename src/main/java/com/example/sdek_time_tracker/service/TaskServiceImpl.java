@@ -9,6 +9,9 @@ import com.example.sdek_time_tracker.exception.NotFoundException;
 import com.example.sdek_time_tracker.mapper.TaskMapper;
 import org.springframework.stereotype.Service;
 
+/**
+ * Реализация сервиса для работы с задачами.
+ */
 @Service
 public class TaskServiceImpl implements TaskService {
 
@@ -18,6 +21,12 @@ public class TaskServiceImpl implements TaskService {
         this.taskMapper = taskMapper;
     }
 
+    /**
+     * Создает новую задачу со статусом NEW.
+     *
+     * @param request данные для создания задачи
+     * @return созданная задача
+     */
     @Override
     public TaskResponse createTask(CreateTaskRequest request) {
         Task task = Task.builder()
@@ -30,6 +39,13 @@ public class TaskServiceImpl implements TaskService {
         return toResponse(task);
     }
 
+    /**
+     * Возвращает задачу по идентификатору.
+     *
+     * @param id идентификатор задачи
+     * @return найденная задача
+     * @throws NotFoundException если задача не существует
+     */
     @Override
     public TaskResponse getTaskById(Long id) {
         Task task = taskMapper.findById(id);
@@ -39,6 +55,14 @@ public class TaskServiceImpl implements TaskService {
         return toResponse(task);
     }
 
+    /**
+     * Обновляет статус задачи.
+     *
+     * @param id идентификатор задачи
+     * @param request новый статус
+     * @return обновленная задача
+     * @throws NotFoundException если задача не существует
+     */
     @Override
     public TaskResponse updateTaskStatus(Long id, UpdateTaskStatusRequest request) {
         int updatedRows = taskMapper.updateStatus(id, request.status());

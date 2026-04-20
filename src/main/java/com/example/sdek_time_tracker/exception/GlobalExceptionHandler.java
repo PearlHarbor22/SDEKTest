@@ -12,19 +12,34 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Глобальный обработчик исключений приложения.
+ * <p>
+ * Перехватывает исключения и преобразует их в единый формат HTTP-ответа (ErrorResponse).
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Обработка исключения, когда сущность не найдена.
+     */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage(), null);
     }
 
+    /**
+     * Обработка бизнес-ошибок (некорректные данные, логические ошибки).
+     */
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusiness(BusinessException ex) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), null);
     }
 
+    /**
+     * Обработка ошибок валидации @Valid (DTO).
+     * Собирает список ошибок по полям.
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -34,11 +49,17 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, "Validation failed", errors);
     }
 
+    /**
+     * Обработка ошибок валидации параметров (например, @RequestParam).
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleOther(Exception ex) {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", null);
     }
 
+    /**
+     * Обработка всех прочих непредвиденных ошибок.
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -54,6 +75,9 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, "Validation failed", errors);
     }
 
+    /**
+     * Формирует стандартный ответ об ошибке.
+     */
     private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status,
                                                                                  String message,
                                                                                  Map<String, String> errors) {

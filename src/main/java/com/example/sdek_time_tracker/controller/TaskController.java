@@ -21,7 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
+/**
+ * REST-контроллер для работы с задачами.
+ * <p>
+ * Предоставляет endpoints для создания задачи,
+ * получения задачи по идентификатору и изменения ее статуса.
+ */
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
@@ -32,6 +37,12 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    /**
+     * Создает новую задачу.
+     *
+     * @param request данные для создания задачи
+     * @return созданная задача
+     */
     @Operation(summary = "Create task")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Task created",
@@ -39,13 +50,18 @@ public class TaskController {
             @ApiResponse(responseCode = "400", description = "Validation failed",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskResponse createTask(@Valid @RequestBody CreateTaskRequest request) {
         return taskService.createTask(request);
     }
 
+    /**
+     * Возвращает задачу по ее идентификатору.
+     *
+     * @param id идентификатор задачи
+     * @return найденная задача
+     */
     @Operation(summary = "Get task by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task found",
@@ -58,6 +74,13 @@ public class TaskController {
         return taskService.getTaskById(id);
     }
 
+    /**
+     * Обновляет статус существующей задачи.
+     *
+     * @param id идентификатор задачи
+     * @param request новый статус задачи
+     * @return задача с обновленным статусом
+     */
     @Operation(summary = "Update task status")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task status updated",
