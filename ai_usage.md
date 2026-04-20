@@ -23,7 +23,7 @@
 
 В результате controller-тесты были успешно изолированы и начали стабильно выполняться
 
-![img_3.png](testProblem.png)
+![img_3.png](images/testProblem.png)
 
 ### Пример: ошибка ExpiredJwtException
 
@@ -36,4 +36,4 @@
 - добавлен try-catch в метод isTokenValid
 - в результате добавления все невалидные и просроченные токены корректно отрабатываются
 
-![img_3.png](validTokenProblem.png)
+![img_3.png](images/validTokenProblem.png)
